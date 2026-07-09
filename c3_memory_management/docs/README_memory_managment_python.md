@@ -32,15 +32,15 @@ There are really two parts to this
 
 **CPP: int x on STACK**
 
-![alt text](docs/readme_imgs/python_memory/cpp_stack.png) 
+![alt text](readme_imgs/python_memory/cpp_stack.png) 
 
 **Python: x is on HEAP**
 
-![alt text](docs/readme_imgs/python_memory/python_objects_on_heap1.png) 
+![alt text](readme_imgs/python_memory/python_objects_on_heap1.png) 
 
 **Python: More Examples. Everything is an Object. Everything on the Heap**
 
-![alt text](docs/readme_imgs/python_memory/python_objects_on_heap2.png) 
+![alt text](readme_imgs/python_memory/python_objects_on_heap2.png) 
 
 
 ### 1.3.1) The Variable Name Is on The Stack
@@ -49,7 +49,7 @@ There are really two parts to this
 - Variable Name Itself on Stack: x
 - Pyobject on Heap: pyobject
 
-![alt text](docs/readme_imgs/python_memory/python_objects_on_heap3.png)
+![alt text](readme_imgs/python_memory/python_objects_on_heap3.png)
 
 ## 🎯 1.4) Python has no concept of static and dynamic variables . So what is stored in the data segment ?
 So the data segment does not have python programmes variables , because python has no concept of static variables etc. Also if u still havent caught onto the main idea- all python variables are objects that live on the heap
