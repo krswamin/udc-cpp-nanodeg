@@ -40,7 +40,7 @@
 
  ```
 
-![alt text](docs/readme_imgs/cpp_memory/cpp1_virtual_address_space.png)
+![alt text](readme_imgs/cpp_memory/cpp1_virtual_address_space.png)
 
 
  | Memory Region                | Stores                                                          | Lifetime                |
@@ -111,7 +111,7 @@ Stack                     Heap
 
 # 🎯 2) STATIC  MEMORY AREAS
 
-![alt text](docs/readme_imgs/cpp_memory/cpp2_static_memory_areas.png)
+![alt text](readme_imgs/cpp_memory/cpp2_static_memory_areas.png)
 
 - By static memory , we dont mean the area for statically allocated stuff such as int, float etc
 - We mean the area in the virtual address space that does not change size. **💡 ONCE SPACE HAS BEEN ALLOCATED FOR THIS . IT DOES NOT CHANGE IN SIZE OR PURPOSE** . Global variables, static variables remain alive through the lifetime of the programme. Code of course will remain alive throughout
@@ -127,7 +127,7 @@ Stack                     Heap
 
 # 🎯 2) DYNAMIC MEMORY AREAS
 
-![alt text](docs/readme_imgs/cpp_memory/cpp3_dynamic_memory_areas.png)
+![alt text](readme_imgs/cpp_memory/cpp3_dynamic_memory_areas.png)
 
 - By dynamic memory , we *DON'T ONLY ** mean the area for PROGRAMMATICALLY dynamically allocated stuff such as new/delete malloc/free. 
 - We mean the area in the virtual address space that keeps changing in size & purpose. This includes both 
@@ -569,10 +569,10 @@ Static Data                 Heap
       0xA7F3-C91E-5D42-1233
       ```
 
-**⚠️ RE-READ PTS 1, 2,3 above. It is a very common point of confusion . The number of bits in an address(64bits),  and the size of the location(8bits) are two different concepts.**
+**⚠️ RE-READ PTS 1, 2,3 above. It is a very common point of confusion . The the size of the location(8bits), the number of bits in an address(64bits),  and the value to increase the address byte (1) are three different concepts.**
 
 
-![alt text](docs/readme_imgs/cpp_memory/memory_bytes.png)
+![alt text](readme_imgs/cpp_memory/memory_bytes.png)
 
 ### 💡 How many bytes in various datatypes ?
 - int32 : 32 bits = 4 bytes
