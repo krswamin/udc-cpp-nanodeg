@@ -229,8 +229,10 @@ Stack                     Heap
 
 
 # 🎯 3) POINTERS : ARE THEY ON THE HEAP OR STACK
-Short Answer: Pointers can live anywhere, and the memory that they point to can live anywhere as well
-stack-stack, stack-heap, heap-heap . global-data region-stack, globaldata-heap. Any combination is possible
+Answer:
+- Pointers can live anywhere: Stack, Heap, Global-Static Data (.bss, .data sections)
+- The memory that they point to can live anywhere as well. Stack, Heap, Global-Static Data (.bss, .data sections)
+- stack-stack, stack-heap, heap-heap . global-data region-stack, globaldata-heap. Any combination is possible
 
 NOTE: 💡
 - The following examples use new , for the purpose of demonstration and for the sake of demonstrating pointers in various locations,  memory leaks,  and dangling pointers. 
