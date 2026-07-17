@@ -1,3 +1,6 @@
+# 🎯 CPP POINTERS
+This entire readme deals with pointers in c++ only
+
 # 🎯 1) CPP POINTERS : WHERE DO THEY LIVE ? HEAP OR STACK
 Now that we are talking about Memory, Heap , Stack etc, Pointers come to mind. And its also a source of confusion. Because pointers are memory storing variables, my mind often tricks me into thinking pointers only deal with Dynamically Allocated Memory i.e THE HEAP. That the pointers themselves live on THE HEAP and they point to data on THE HEAP. ❌ This of course is **NOT TRUE**. Lets sort this confusion !
 \
@@ -23,7 +26,7 @@ NOTE: 💡
 - The following examples use new , for the purpose of demonstration and for the sake of demonstrating pointers in various locations,  memory leaks,  and dangling pointers. 
 - But modern C++ never uses new. Modern C++ relies on the principle of Resource Acquisition Is Initialization (RAII) and smart pointers to handle memory automatically.
 
-### 💡 Example 1: pointer on stack, object on stack
+### 💡 Example 1.1: pointer on stack, object on stack
 - pointer on stack
 - object pointer points to is also on stack
   ```
@@ -55,7 +58,7 @@ NOTE: 💡
   ```
 
 
-### 💡 Example 2: pointer on stack, object on heap
+### 💡 Example 1.2: pointer on stack, object on heap
 - pointer on stack
 - object pointer points is on heap
 one of the most important concepts in c++ is
@@ -93,7 +96,7 @@ Stack                            Heap
 
 ```
 
-### 💡 Example 2: MEMORY LEAK DISCUSSION
+### 💡 Example 1.2: MEMORY LEAK DISCUSSION
 Question : Now in the same example above what if we dont release heap memory pointed by p1 and p2. 
 - Would that memory never be released even after the program terminates ?
 - Would this could be a code with memory leak  ?
@@ -130,7 +133,7 @@ void demo_function(){
 ```
 
 
-### 💡 Example 3: pointer on heap, object on heap 
+### 💡 Example 1.3: pointer on heap, object on heap 
 This is essentially a pointer to a pointer for the purpose of demonstration
 - pp on stack. pp is a pointer to a pointer
 - pp points to new int*.  new int* is the second pointer here and it is on heap
@@ -166,7 +169,7 @@ Stack                                   Heap
                                          +----------------------+
 ```
 
-### 💡 Example 4:
+### 💡 Example 1.4:
 In practice, you rarely allocate a standalone pointer on the heap. A much more common case is a pointer inside a heap-allocated object:
 - pointer on stack
 - Node Object on the heap
@@ -200,7 +203,7 @@ int main(){
 ```
 
 
-### 💡 Example 5: Examples like this are commonly encountered
+### 💡 Example 1.5: Examples like this are commonly encountered
 
 In practice, you rarely allocate a standalone pointer on the heap. A much more common case is a pointer inside a heap-allocated object:
 - s1 and s2 are pointer variables on the stack.
@@ -251,7 +254,7 @@ Stack                                 Heap
 ```
 
 
-### 💡 Example 6: Example 5 reimagined as Global Data
+### 💡 Example 1.6: Example 5 reimagined as Global Data
 NOTE: There is no longer a stack
 
 
@@ -300,7 +303,7 @@ Global/Static Data(.bss)                        Heap
 ```
 
 
-### 💡 Example 7: Static pointer → Static data
+### 💡 Example 1.7: Static pointer → Static data
 
 Again, the pointer is not on the stack.
 
@@ -324,9 +327,37 @@ Static Data                 Heap
 \
 \
 
-# 🎯 2) POINTERS ARE TYPED ! BUT WHY ? 🤯🤯🤯
+
+# 🎯 2) POINTERS & HEAP MEMORY
+- dynamic memory is almost always accessed using pointers in c++ 😅
+- This is the reason why , when you think of pointers, you almost alway think of dynamic memory (even though based on section 1 pointers can live any where and point to stack, heap or global) 
+- You could use references,  but they are tricky. But nevertheless the reference is obtained by dereferencing a pointer. you would need a pointer anyway 
+
+## 🎯 2.1) POINTERS TO HEAP MEMORY
+- - In C++ avoid using raw pointers like new/delete. Use smart pointers instead
+ - p = new int, delete p. In C++ if you use new , every new should be accompanied by delete
+ - p = new int[5]. delete[] p . In C++ if you use new[] every new[] should be accompanied by delete[] (pay attention to [])
+ - malloc, callon: free. In C every malloc should be accompanied by free. Every calloc should be accompanied by free
+ 
+## 🎯 2.2) REFERENCES TO HEAP MEMORY
+- See T2_dynamic_memory_allocation/dangling_reference_demo.cpp
+- references can be derived from derefencing pointers to heap memory
+- ensure that the reference lifetime/scope ends before delete p : see the function void demo3_proper_pointer_and_reference () in T2_dynamic_memory_allocation/dangling_reference_demo.cpp
+
+## 🎯 2.3) HEAP MEMORY, POINTERS, REFERENCES PROBLEMS
+Accessing heap memory in cpp comes with a hoarde of problems when pointers and references are handled improperly. \ 
+Common problems are
+- Memory Leak
+- Dangling Pointers
+- Dangling References
+
+See README_2b_cpp_pointers_references_memory.md for more details
+
+
+# 🎯 3) POINTERS ARE TYPED ! BUT WHY ? 🤯🤯🤯
 
 I first encountered C++ and pointers in 8th grade (a while ago !). One of the things that beat me was **WHY DO POINTERS HAVE TYPES ?**
+
 - a Pointer variable stores an address. All addresses are 64bit (on 64 bit machines) represented typically using hexadecimal numbers. 
 - Whether the address location stores primitive data types like int, float or non primitive data types like a struct , or an object of a class it will always be a 64bit hexadecimal number. The address is like a house number- the hexadecimal number has no notion of int , float, struct, class etc
 - **THEN WHY DO POINTERS HAVE TYPES ?WHY CANT A INT POINTER , POINT TO A FLOAT AS WELL , OR POINT TO A CLASS OBJECT ? 🤯🤯🤯**
@@ -343,7 +374,7 @@ ANSWER: Pointers are typed because
  ![alt text](readme_imgs/cpp_pointers/pointers_are_typed_for_arithmetic.png)
 
 
-# 🎯 3) POINTER ARITHMETIC
+# 🎯 4) POINTER ARITHMETIC
 See T3_pointers_and_pointer_arithmetic/pointer_arithmetic2_data_types.cpp
 
 - Increment pointers. Notice that all the pointers do not increase by the same value. They increase by the number of bytes that the data type that they point to consumes 
@@ -354,7 +385,7 @@ See T3_pointers_and_pointer_arithmetic/pointer_arithmetic2_data_types.cpp
   - double: increases by 8 bytes
 
 
-# 🎯 4) POINTERS: MEMORY ALIGNMENT
+# 🎯 5) POINTERS: MEMORY ALIGNMENT
 See T3_pointers_and_pointer_arithmetic/pointer_arithmetic2_data_types.cpp
 - one thing is memory increments by the data type the pointer points to
 - another aspect is the memory also increments by the memory pages. 
@@ -396,17 +427,6 @@ struct Teacher{
 
 ```
 
-# 🎯 5) POINTERS TO HEAP
 
- p = new int, delete p
- p = new int[5]. delete[] p
- malloc, callon: free
-## ----------------------------------------------------------------------------------------
-## ----------------------------------------------------------------------------------------
-## ----------------------------------------------------------------------------------------
-## ----------------------------------------------------------------------------------------
-## ----------------------------------------------------------------------------------------
-## ----------------------------------------------------------------------------------------
-## ----------------------------------------------------------------------------------------
-## ----------------------------------------------------------------------------------------
+## ---------------------------------------  THE END 😄 -------------------------------------------------
 
