@@ -1,4 +1,7 @@
 
+# 🎯 CPP : POINTERS, REFERENCES, MEMORY
+This entire readme deals with pointers, references, heap memory in c++ only
+
 # 🎯 1) POINTERS : MEMORY LEAK 
 ## ----------------------------------------------------------------------------------------
 ## ----------------------------------------------------------------------------------------
@@ -22,15 +25,13 @@ Dangling Pointers:
 
 
 ## 🎯 2.1) POINTERS : DANGLING POINTERS ON STACK
-## ----------------------------------------------------------------------------------------
-## ----------------------------------------------------------------------------------------
+- see  T3_pointers_and_pointer_arithmetic/dangling_pointer1_stack_demo.cpp
 
 ## 🎯 2.2) POINTERS : DANGLING POINTERS ON HEAP
-## ----------------------------------------------------------------------------------------
-## ----------------------------------------------------------------------------------------
+- see  T3_pointers_and_pointer_arithmetic/dangling_pointer2_heap_demo.cpp
 
-| Pointer stored in | Pointing to | Object destroyed?      | Dangling? |
-| ----------------- | ----------- | ---------------------- | --------- |
+| Pointer stored in | Pointing to | Object destroyed?      | Dangling?  |
+| ----------------- | ----------- | ---------------------- | ---------  |
 | Stack             | Heap        | Yes (`delete`)         | ✅         |
 | Stack             | Stack       | Yes (function returns) | ✅         |
 | Heap              | Heap        | Yes (`delete`)         | ✅         |
@@ -38,7 +39,7 @@ Dangling Pointers:
 | Global            | Heap        | Yes (`delete`)         | ✅         |
 
 
-# 🎯 3) COMMON POINTER PROBLEMS
+# 🎯 4) COMMON POINTER PROBLEMS
 
 1) accessing invalid pointers
     - accessing wild pointers/ uninitalized pointers
@@ -50,7 +51,7 @@ Dangling Pointers:
 
 
 
-# 🎯 4) CARDINAL RULE WITH POINTERS
+# 🎯 5) CARDINAL RULE WITH POINTERS
 
 1) for dynamic memory: new-delete-nullptr, new[]-delete[]-nullptr: 
 2) for static memory: create pointer-assign address-then dereference (otherwise you are accessing a wild pointer)
@@ -62,5 +63,5 @@ Dangling Pointers:
 5) when using a reference, the reference lifetime, scope should end before the memory on heap/ stack ends. Because a DANGLING REFERENCE CANNOT BE REASSIGNED
 
 
-# 🎯 5) Pointers vs References . When to use what ?
+# 🎯 6) Pointers vs References . When to use what ?
 
