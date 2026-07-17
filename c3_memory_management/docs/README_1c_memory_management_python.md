@@ -1,4 +1,4 @@
-# 🎯 1) Python's Organization of Virtual Address Space
+# 🎯 1) Python's HANDLING of the VIRTUAL ADDRESS SPACE
 
 ## 🎯 1.1) Does Python Organize the Virtual Space like C++ ? \
 Yes it organizes the virtual space like c++ does. This is because the Python Interpreter is Cpython - a cprogramme
