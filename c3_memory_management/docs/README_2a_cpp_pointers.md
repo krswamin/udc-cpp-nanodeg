@@ -2,7 +2,10 @@
 This entire readme deals with pointers in c++ only
 
 # 🎯 1) CPP POINTERS : WHERE DO THEY LIVE ? HEAP OR STACK
-Now that we are talking about Memory, Heap , Stack etc, Pointers come to mind. And its also a source of confusion. Because pointers are memory storing variables, my mind often tricks me into thinking pointers only deal with Dynamically Allocated Memory i.e THE HEAP. That the pointers themselves live on THE HEAP and they point to data on THE HEAP. ❌ This of course is **NOT TRUE**. Lets sort this confusion !
+- Now that we are talking about Memory, Heap , Stack etc, Pointers come to mind. 
+- Its also a source of confusion. Because pointers are memory storing variables, my mind often tricks me into thinking pointers only deal with Dynamically Allocated Memory i.e THE HEAP. I often think that the pointers themselves live on THE HEAP and, that the memory that they point to is also on the data on THE HEAP. ❌ This of course is **NOT TRUE**.  
+- But it is true that dynamically allocated memory in c++ can only be accessed through pointers
+Lets sort all the  confusion !
 \
 QUESTION: 
 - Where are the pointers. Are they on the Heap or Stack ?
@@ -329,8 +332,8 @@ Static Data                 Heap
 
 
 # 🎯 2) POINTERS & HEAP MEMORY
-- dynamic memory is almost always accessed using pointers in c++ 😅
-- This is the reason why , when you think of pointers, you almost alway think of dynamic memory (even though based on section 1 pointers can live any where and point to stack, heap or global) 
+- **dynamic memory is almost always accessed using pointers in c++ 😅**
+- **This is the reason why , when you think of pointers, you almost alway think of dynamic memory** (even though based on section 1 pointers can live any where and point to stack, heap or global) 
 - You could use references,  but they are tricky. But nevertheless the reference is obtained by dereferencing a pointer. you would need a pointer anyway 
 
 ## 🎯 2.1) POINTERS TO HEAP MEMORY
@@ -345,13 +348,14 @@ Static Data                 Heap
 - ensure that the reference lifetime/scope ends before delete p : see the function void demo3_proper_pointer_and_reference () in T2_dynamic_memory_allocation/dangling_reference_demo.cpp
 
 ## 🎯 2.3) HEAP MEMORY, POINTERS, REFERENCES PROBLEMS
-Accessing heap memory in cpp comes with a hoarde of problems when pointers and references are handled improperly. \ 
+Accessing heap memory in cpp comes with a horde of problems when pointers and references are handled improperly. \ 
 Common problems are
 - Memory Leak
 - Dangling Pointers
 - Dangling References
 
-See README_2b_cpp_pointers_references_memory.md for more details
+For common cpp, &/or cpp pointer problems see:  [c3_memory_management/docs/README_4_code_debugging.md](README_4_code_debugging.md) \
+For pointer management see: [c3_memory_management/docs/README_3_modern_cpp_pointer_management.md](EADME_3_modern_cpp_pointer_management.md)
 
 
 # 🎯 3) POINTERS ARE TYPED ! BUT WHY ? 🤯🤯🤯
