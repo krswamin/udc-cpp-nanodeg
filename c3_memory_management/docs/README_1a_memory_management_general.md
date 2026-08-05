@@ -43,18 +43,9 @@
 ![alt text](readme_imgs/cpp_memory/cpp1_virtual_address_space.png)
 
 
- | Memory Region                | Stores                                                          | Lifetime                |
-| ---------------------------- | --------------------------------------------------------------- | ----------------------- |
-| **Text (Code)**              | Compiled machine instructions (functions)                       | Entire program          |
-| **Read-only Data (.rodata)** | String literals, `const` global variables                       | Entire program          |
-| **Data Segment**             | Initialized global and `static` variables                       | Entire program          |
-| **BSS Segment**              | Uninitialized or zero-initialized global and `static` variables | Entire program          |
-| **Heap**                     | Objects allocated using `new`, `new[]`, `malloc()`              | Until `delete`/`free()` |
-| **Stack**                    | Function parameters, local variables, return addresses          | Until function returns  |
-
-
-
-
+\
+\
+\
 
 # 🎯 2) STATIC  MEMORY AREAS
 
@@ -71,6 +62,9 @@
     - code(.text): read only area
 - Together the .text, .bss, .data provide the stable foundation for the code and long lived data needed for the programme. 
 
+\
+\
+\
 
 # 🎯 3) DYNAMIC MEMORY AREAS
 
@@ -78,11 +72,17 @@
 
 - By dynamic memory , we *DON'T ONLY ** mean the area for PROGRAMMATICALLY dynamically allocated stuff such as new/delete malloc/free. 
 - We mean the area in the virtual address space that keeps changing in size & purpose. This includes both 
-  - STACK: for statically allocated ints, floats, class objects and function call stacj
+  - STACK: for function call stack & for statically allocated ints, floats, class objects within the call stack 
+  - HEAP: for dynamically allocated ints, floats, class objects etc.
+  - The Heap is vastly larger than a heap. 
+      - The large heap in virtual address space is an operating system and hardware feature. 
+      - It is not specific to c++. 
+      - So Java, Golang, python etc which all use the same virtual address space presented by the operating system all use / experience a vastly larger heap space than the stack space
+      
 
-
-
-
+\
+\
+\
 
 # 🎯 4) MEMORY AS ADDRESSABLE UNITS
 
@@ -143,7 +143,7 @@ A short summary is:
 - During inference, the CPU/GPU/NPU reads the byte and unpacks the two INT4 values before performing computations.
 - Specialized AI hardware can unpack and process many INT4 values in parallel, making INT4 both memory-efficient and fast.**
 
-# 🎯 6) MEMORY HEIRARCHY
+# 🎯 5) MEMORY HEIRARCHY
 
 ## -----------------------------------------------------------------------------
 ## -----------------------------------------------------------------------------
@@ -151,7 +151,7 @@ A short summary is:
 ## -----------------------------------------------------------------------------
 
 
-# 🎯 6.1) DECIPHERING COMPUTER/LAPTOP SPECIFICS
+# 🎯 5.1) DECIPHERING COMPUTER/LAPTOP SPECIFICS
 
 ## -----------------------------------------------------------------------------
 ## -----------------------------------------------------------------------------
