@@ -107,7 +107,9 @@ Stack                     Heap
 +----------+---------+----------+      +----------+---------+----------+
 
 ```
-
+\
+\
+\
 
 # 🎯 2) STATIC  MEMORY AREAS
 
@@ -124,6 +126,9 @@ Stack                     Heap
     - code(.text): read only area
 - Together the .text, .bss, .data provide the stable foundation for the code and long lived data needed for the programme. 
 
+\
+\
+\
 
 # 🎯 3) DYNAMIC MEMORY AREAS
 
@@ -131,8 +136,11 @@ Stack                     Heap
 
 - By dynamic memory , we *DON'T ONLY ** mean the area for PROGRAMMATICALLY dynamically allocated stuff such as new/delete malloc/free. 
 - We mean the area in the virtual address space that keeps changing in size & purpose. This includes both 
-  - STACK: for statically allocated ints, floats, class objects and function call stacj
+  - STACK: for function call stack & for statically allocated ints, floats, class objects within the call stack 
+  - HEAP: for dynamically allocated ints, floats, class objects etc.
 
+\
+\
 
 ## 🎯 3.1) STACK ALLOCATIONS
   - the progammatically static memory allocations such as ints, floats, class objects, etc. These are on the STACK. 
@@ -141,7 +149,9 @@ Stack                     Heap
   - If the stack has to grow, it grows downwards towards lower memory addresses
   - The stack is optimized for speed for short lived data
   
-    
+\
+\
+  
 ## 🎯 3.2) HEAP ALLOCATIONS 
   - the progammatically dynamic memory allocations such as new. could be new int, new floats , or even new class objects. These are on the HEAP. 
   - The **LIFETIME IS CONTROLLED BY THE PROGRAMMER**: If the lifetime of the variable is done and you - the programmer forgets to release it, it causes a **MEMORY LEAK**
@@ -155,111 +165,22 @@ Stack                     Heap
       - but everytime you call 'new' the programme doesnt grab memory directly from the operating system. Instead the programme talks to a component of the c++ runtime library called **memory allocator**. 
       - The memory allocator sits in between the programme and the operating system and manages the heap, releases heap memory, asks the os for more heap memory, . It manages using free lists
 
-## 🎯 3.3) STACK : PROBLEMS
-### 🎯 3.3.1) STACK : FAMOUS PROBLEMS
-- **😈 1. STACK OVERFLOW** : The most common stack problem is  . The stack runs out of space/ stack grows beyond its allocated region. It can occur
-    - if you allocate a very large array (RARE)
-    - very deep recursion (MOST COMMON CAUSE)
-      ```
-          void recurse()
-          {
-              recurse();
-          }
-      ```
-
-- **STACK OVERFLOW - DIAGNOSIS: GDB** : 
-  - When a stack overflow occurs the code just ends abruptly
-  - Can be diagnosed using GDB, you can traceback at what point the code exited and keep stepping backwards
-
-### 🎯 3.3.2) STACK : LESS FAMOUS PROBLEMS
-- **😈 2. STACK BUFFER OVERFLOW**: writing beyond a stack-allocated array.
-   ```
-    void foo()
-    {
-        int arr[10];
-        arr[100] = 5;
-    }
-  ```
-
-- **😈 3. INVALID STACK POINTER** : 
- That address doesn't belong to your program.
-  ```
-  int* p = (int*)0x12345678;
-  *p = 5;
-  ```
 
 
+## 🎯 3.3) STACK & HEAP: COMMON PROBLEMS 
+See [c3_memory_management/docs/README_4_code_debugging.md](README_4_code_debugging.md)
+\
+\
 
-## 🎯 3.4) HEAP : PROBLEMS
-### 🎯 3.4.1) HEAP: FAMOUS PROBLEMS
-- **e 👹 1) MEMORY LEAK** : the most common problem is Memory Leak. The programmer forgot to delete a variable that is no longer needed
-- **MEMORY LEAK: DIAGNOSIS: VALGRIND** : valgrind to diagnose memory leaks
+## 🎯 3.4) STACK & HEAP: DEBUGGING THE PROBLEMS
+See [c3_memory_management/docs/README_4_code_debugging.md](README_4_code_debugging.md)
+\
+\
 
+## 🎯 3.5) STACK & HEAP: AVOIDING PROBLEMS/ GOOD CODE PRACTICES
+See [c3_memory_management/docs/README_3_modern_cpp_pointer_management.md](README_3_modern_cpp_pointer_management.md)
 
-### 🎯 3.4.2) HEAP: LESS FAMOUS PROBLEMS
-- **e 👹 2) HEAP OVERFLOW / OUT OF MEMORY**: Heap overflow can occur. But this is called out of memory error
-- **e 👹 3) HEAP BUFFER OVERFLOW** : Writing beyond the allocated heap block.
-    ```
-    int* arr = new int[10];
-    arr[100] = 5;
-    ```
-- **e 👹 4) DANGLING HEAP POINTER/ USING A FREED HEAP POINTER** : 
-  ```
-  int* p = new int(42);
-  delete p;
-  *p = 10;      // Invalid
-  ```
-
-
-## 🎯 3.5) SEGMENTATION FAULT: HEAP & STACK
-- Segmentation fault just means invalid/ illegal memory access. 
-- It could occur due to any of the following reasons. But Memory Leak is not one of them
-- can occur on the heap or stack
-
-| Problem               | Segmentation Fault? |
-| --------------------- | ------------------- |
-| Null pointer          | ✅ Yes               |
-| Stack overflow        | ✅ Usually           |
-| Heap buffer overflow  | ✅ Often             |
-| Stack buffer overflow | ✅ Often             |
-| Use-after-free        | ✅ Often             |
-| Invalid pointer       | ✅ Yes               |
-| Memory leak           | ❌ No                |
-
-
-# 🎯 4) CPP POINTERS : WHERE DO THEY LIVE ? HEAP OR STACK
-
-Now that we are talking about Memory, Heap , Stack etc, Pointers come to mind. And its also a source of confusion. Because pointers are memory storing variables, my mind often tricks me into thinking pointers only deal with Dynamically Allocated Memory i.e THE HEAP. That the pointers themselves live on THE HEAP and they point to data on THE HEAP. ❌ This of course is **NOT TRUE**. Lets sort this confusion !
-QUESTION: 
-- Where are the pointers. Are they on the Heap or Stack ?
-- Where is the data that they point to. Is it on the Heap os Stack ?
-
-See README_memory_management_cpp_pointers.md
-
-
-# 🎯 5) MEMORY AS ADDRESSABLE UNITS
-  - Each address location gets incremented by 1 (not 8) 
-
-### 💡 How many bytes in various datatypes ?
-- int32 : 32 bits = 4 bytes
-- int16 : 16 bits = 2 bytes
-- int8  :  8 bits = 1 byte
-- int4  :  4 bits = 0.5 byte. This would need half a byte. But the smallest memory unit is a byte. So how does int4 work ?
-- float : 32 bits = 4 bytes
-- double: 64 bits = 8 bytes
-
-### 💡 HOW DOES INT4 (half a byte) WORK if 1 BYTE is THE SMALLEST UNIT OF MEMORY ?
-A short summary is:
-
-**Memory is byte-addressable, not type-addressable. INT4 works by packing two 4-bit values into a single byte.**
-
-- Memory addresses still point to 1 byte (8 bits).
-- An INT4 value occupies only half of a byte, so it cannot have its own address.
-- Instead, two INT4 values are packed into one byte.
-- During inference, the CPU/GPU/NPU reads the byte and unpacks the two INT4 values before performing computations.
-- Specialized AI hardware can unpack and process many INT4 values in parallel, making INT4 both memory-efficient and fast.**
-
-
-
+\
+\
 
 ## --------------------------------------THE END -----------------------------------------
