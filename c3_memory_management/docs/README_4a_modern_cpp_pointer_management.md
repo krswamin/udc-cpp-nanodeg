@@ -81,5 +81,3 @@
 - 11) when using a reference, the reference lifetime, scope should end before the memory on heap/ stack ends. Because a **DANGLING REFERENCE CANNOT BE REASSIGNED**
 
 
-
-
