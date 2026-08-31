@@ -8,5 +8,6 @@
 - This is the High Level README.md for the Udacity C++ Nanodegree.
 - Find invidual READMEs for each course in the nanodegree under the respective folders. The READMEs have been broken down by topic. 
     - For Example find the README for Course 3 Memory Management, under c3_memory_management/docs/
-    - c3_memory_management/docs/README_memory_management_cpp.md
-    - c3_memory_management/docs/README_memory_management_python.md
+        - [c3_memory_management/docs/README_1c_memory_management_python.md](c3_memory_management/docs/README_1c_memory_management_python.md)
+        - [c3_memory_management/docs/README_2a_cpp_pointers.md](c3_memory_management/docs/README_2a_cpp_pointers.md) 
+
