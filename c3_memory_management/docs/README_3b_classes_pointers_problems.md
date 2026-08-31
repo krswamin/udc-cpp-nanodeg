@@ -123,14 +123,38 @@ Types of resources being handled is not just dynamically allocated memory
 
 
 ### 🎯 5.2) RULE OF FIVE
-In C++11 and later the rule of 3 evolves to a rule of 5. Rule of 5 says, that if you need any of the 3, custom destructor, custom copy constructor, or custom copy-assignment operator, you must implement the move constructor, and move-assignment operator as well.
+In C++11 and later the rule of 3 evolves to a rule of 5. Rule of 5 says, that if you need any of the 3, custom destructor, custom copy constructor, or custom copy-assignment operator, you must implement the move constructor, and move-assignment operator as well. \
 
-**The Rule of FIVE/ What value does Rule of 5 bring**
+\
+If a class manually manages a resource and needs to define one of its special resource-management functions, it will often need to define all five.
 
-  
-- But Deep Copying is expensive. Especially for large objects, deep copying is not viable always
-- Wherever appropriate moving might be more efficient/ less expensive than deep copying. What if we new an object is going to get destroyed anyway. Like when returning an object from  a function. In this case moving is much less costlier than deep copying
-- Rule of 5 implements the move constructor , & move-assignment operator for better move semantics. \ This is the value add of rule of 5
+| # | Function                     | Purpose                                      | Typical signature                              |
+| - | ---------------------------- | -------------------------------------------- | ---------------------------------------------- |
+| 1 | **Destructor**               | Releases owned resources                     | `~ClassName()`                                 |
+| 2 | **Copy constructor**         | Creates a new object by copying              | `ClassName(const ClassName& other)`            |
+| 3 | **Copy assignment operator** | Copies into an existing object               | `ClassName& operator=(const ClassName& other)` |
+| 4 | **Move constructor**         | Creates a new object by taking its resources | `ClassName(ClassName&& other)`                 |
+| 5 | **Move assignment operator** | Transfers resources into an existing object  | `ClassName& operator=(ClassName&& other)`      |
+
+
+
+**RULE of 5 IMPLEMENTATION DETAILS**
+- Move Constructors and Move Assignment Operators are not really necessary. But in case of large objects, copying them is very resource heavy. So moving is more efficient
+- as far as the moving goes. See below  the memory diagrams
+    - anything that is not a pointer on the stack are copied (i.e. int, float, double, even objects etc) 
+    - anything that is a pointer on the stack is NOT copied. It is MOVED i.e new object's pointer points to the memory location. old object pointer continues to point to the object on the stack. See main_tptr1
+    - anything that is a pointer on the heap is NOT copied. It is MOVED i.e new object's pointer points to the memory location. old object pointer is SET TO NULLPTR.  see assistant_tptr2
+    - **notice that the OLD OBJECT WILL BECOME INCOMPLETE. i.e all the pointers pointing to dynamically allocated memory will no longer have any data. THEY ARE ALL NULLPTR. THIS IS OKAY ! They are incomplete, but they are all valid still, since you have set them to nullptr**
+    - ~~anything that is not a pointer on the heap .....~~ this is not possible. Everything on the heap is accessed through a pointer. Lol !
+
+**WHAT VALUE DOES RULE OF 5 BRING**
+- Rule of 3 is sufficient to make correct deep copies. \
+- Rule of 3 is sufficient for the correct passing of objects by value & returning of objects by value
+- But Copying is expensive. Wherever appropriate moving might be more efficient/ less expensive than copying. 
+    - Moving is much better than copying for large objects
+    - When temporary rvalues are involved, like returning an object from a function and then copying it, moving is better
+- Rule of 5 implements the move constructor , & move-assignment operator for better move semantics. 
+  This is the value add of rule of 5
 
 
 ![alt text](readme_imgs/cpp_pointers_memory_management/rule_of_five_fig1.png) 
@@ -171,6 +195,7 @@ Answer:
 - “This object is temporary / disposable, so I can steal its resources instead of copying them.” 
 - THIS IS THE FOUNDATION OF MOVE SEMANTICS i.e not just rvalues, it is rvalue references
 - THIS IS WHAT HAPPENS IN MOVE CONSTRUCTOR & MOVE-COPY ASSIGNMENT OPERATOR
+
 
 
 
@@ -319,33 +344,6 @@ See : [L4_rule_of_three_five/ksw_demo3a_rvalue.cpp](../L4_rule_of_three_five/ksw
 
 ## 🎯 CODE DISCUSSION-4 :  RULE  of 5: Move constructors , Move Assignment Operator
 
-In c++ the rule of 5 says
-If a class manually manages a resource and needs to define one of its special resource-management functions, it will often need to define all five.
-| # | Function                     | Purpose                                      | Typical signature                              |
-| - | ---------------------------- | -------------------------------------------- | ---------------------------------------------- |
-| 1 | **Destructor**               | Releases owned resources                     | `~ClassName()`                                 |
-| 2 | **Copy constructor**         | Creates a new object by copying              | `ClassName(const ClassName& other)`            |
-| 3 | **Copy assignment operator** | Copies into an existing object               | `ClassName& operator=(const ClassName& other)` |
-| 4 | **Move constructor**         | Creates a new object by taking its resources | `ClassName(ClassName&& other)`                 |
-| 5 | **Move assignment operator** | Transfers resources into an existing object  | `ClassName& operator=(ClassName&& other)`      |
-
-
-
-**RULE of 5 IMPLEMENTATION DETAILS**
-- Move Constructors and Move Assignment Operators are not really necessary. But in case of large objects, copying them is very resource heavy. So moving is more efficient
-- as far as the moving goes. See below  the memory diagrams
-    - anything that is not a pointer on the stack are copied (i.e. int, float, double, even objects etc) 
-    - anything that is a pointer on the stack is NOT copied. It is MOVED i.e new object's pointer points to the memory location. old object pointer continues to point to the object on the stack. See main_tptr1
-    - anything that is a pointer on the heap is NOT copied. It is MOVED i.e new object's pointer points to the memory location. old object pointer is SET TO NULLPTR.  see assistant_tptr2
-    - **notice that the OLD OBJECT WILL BECOME INCOMPLETE. i.e all the pointers pointing to dynamically allocated memory will no longer have any data. THEY ARE ALL NULLPTR. THIS IS OKAY ! They are incomplete, but they are all valid still, since you have set them to nullptr**
-    - ~~anything that is not a pointer on the heap .....~~ this is not possible. Everything on the heap is accessed through a pointer. Lol !
-
-**WHAT VALUE DOES RULE OF 5 BRING**
-- Rule of 3 is sufficient to make correct deep copies. 
-  Rule of 3 is sufficient for the correct passing of objects by value & returning of objects by value
-- But Copying is expensive. Wherever appropriate moving might be more efficient/ less expensive than copying
-  Rule of 5 implements the move constructor , & move-assignment operator for better move semantics. 
-  This is the value add of rule of 5
 
 
 ### 🎯 CD-4.1) MOVING: MEMORY DIAGRAMS  
@@ -471,6 +469,14 @@ For a simpler code to see when Move Constructors are called , When Move Assignme
 
 ## 🎯 CODE DISCUSSION-5 :  Copy vs Move
 For an apple to apple comparison of copy constructor vs move constructor, copy assignment operator vs move assignment operator. See the following sets of code \
+
+![alt text](readme_imgs/cpp_pointers_memory_management/move_vs_copy.png) 
+Source: udacity
+Key Effects of Moving
+- **Source State:** After a successful move, the source object is left in a valid but unspecified state (often empty or null), ensuring its destructor will not attempt to delete the now-stolen memory.
+- **Automatic Optimization:** The compiler automatically selects the move constructor/assignment operator when dealing with rvalues (e.g., return values from a function) to optimize performance.
+- **Explicit Move:** The std::move() function can be used to explicitly cast an lvalue into an rvalue to force the use of move semantics, though this makes the source object unusable afterward.
+
 **Set 1** \
  [L4_rule_of_three_five/ksw_demo2b_objects_passing_rule_of_three.cpp](../L4_rule_of_three_five/ksw_demo2b_objects_passing_rule_of_three.cpp) \
  vs. \
@@ -485,3 +491,5 @@ vs. \
 
 **Example of std::move** \
  [L4_rule_of_three_five/ksw_demo4b_objects_move_assignment_rule_of_five.cpp](../L4_rule_of_three_five/ksw_demo4b_objects_move_assignment_rule_of_five.cpp)
+
+ ![alt text](readme_imgs/cpp_pointers_memory_management/std_move.png)
