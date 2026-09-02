@@ -1,0 +1,53 @@
+# Compiled Object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.a
+*.lib
+*.la
+*.lai
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Build directories
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+_deps/
+
+# Files without an extension (often compiled binaries)
+*
+!*.*
+!*/
+!Makefile
+!CMakeLists.txt
+!LICENSE
+!Dockerfile
+
+# IDE / editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Debug files
+*.dSYM/
+*.pdb
+
+# OS files
+.DS_Store
+Thumbs.db
