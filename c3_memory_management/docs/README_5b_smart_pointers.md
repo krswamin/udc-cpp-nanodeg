@@ -24,17 +24,22 @@ Shared Pointer: Definition
 see section 3.2
 
 ## 1.2.3) Shared Ptr: Circular References
+see section 4
 This is very common in graph structures, and parent child relationships
+**BUT USING 2 SHARED POINTERS THAT REFERENCE EACH OTHER /CIRCULAR REFERENCES CAUSES MEMORY LEAKS !!!!*** LOL SO MUCH FOR USING SMART POINTERS
 ![alt text](readme_imgs/smart_pointers/shared_ptr_circular_references1.png) 
 
-Instead of using two shared pointers referencing each other, it might be better to use on shared pointer and one weak pointer
+Instead of using two shared pointers referencing each other, use one shared pointer and one weak pointer. **THIS PREVENTS MEMORY LEAKS**
 ![alt text](readme_imgs/smart_pointers/shared_ptr_circular_references2.png)
+
+![alt text](readme_imgs/smart_pointers/memory_diagram.png)
 
 ## 1.3) Weak Pointer
 [L5_smart_memory_management/ksw_demo3_weak_ptr_simple_example.cpp](../L5_smart_memory_management/ksw_demo3_weak_ptr_simple_example.cpp)
 
 - Weak pointer is for observing: without  owning
 - weak pointers **CAN BE CREATED FROM SHARED POINTERS ONLY, OR FROM OTHER COMPATIBLE WEAK POINTERS** 
+- weak pointers cannot be dereferenced directly. You would have to lock it and create a shared pointer to dereference it
 
 ```
 auto shared = std::make_shared<Student>();
@@ -143,7 +148,51 @@ NOT EXPOSED ─────────────────► │ Internal 
 
 What happens when shared_ptr is destroyed, but the weak_ptrs still exist. What happens to the weak pointers and control blocks? \
 When the strong count reaches zero, the object is destroyed. The control block remains alive as long as weak references still need it.
-## CODE
+
+## 4) Shared Ptr: CIRCULAR REFERENCES & MEMORY LEAK
+see section 4
+This is very common in graph structures, and parent child relationships
+**BUT USING 2 SHARED POINTERS THAT REFERENCE EACH OTHER /CIRCULAR REFERENCES CAUSES MEMORY LEAKS !!!!*** LOL SO MUCH FOR USING SMART POINTERS
+![alt text](readme_imgs/smart_pointers/shared_ptr_circular_references1.png) 
+
+Instead of using two shared pointers referencing each other, use one shared pointer and one weak pointer. **THIS PREVENTS MEMORY LEAKS**
+![alt text](readme_imgs/smart_pointers/shared_ptr_circular_references2.png)
+
+Summary of how to avoid circular references and memory leak
+![alt text](readme_imgs/smart_pointers/circular_references.png)
+
+## 4.1) CIRCULAR REFERENCES: CODE DISCUSSION
+**See code**: \
+See explanation at the beginning of each code and comments throughout 
+- [L5_smart_memory_management/ksw_demo5a_circular_ref_all_shared.cpp](../L5_smart_memory_management/ksw_demo5a_circular_ref_all_shared.cpp) 
+- [L5_smart_memory_management/ksw_demo5b_circular_ref_shared_weak.cpp](../L5_smart_memory_management/ksw_demo5b_circular_ref_shared_weak.cpp) 
+- [L5_smart_memory_management/ksw_demo5c_circular_ref_shared_weak_reverse_declaration.cpp](../L5_smart_memory_management/ksw_demo5c_circular_ref_shared_weak_reverse_declaration.cpp)
+
+**Memory Diagram for Code**
+![alt text](readme_imgs/smart_pointers/memory_diagram.png)
+
+**Key concepts**
+- At the very outset, notice that the shared and weak pointers are inside A , B. But the at the high leavel a_sptr and b_sptr are both shared pointers
+-3-to-4 different things exist. 
+    - i) the shared pointer on the stack: a_sptr, b_sptr
+    - ii) the actual object allocated on the heap: A & B
+        - iii) the pointes within the objects A::b_shared_ptr, B::a_shared_ptr/ b_weak_ptr. These exist on the heap within the heap objectws
+    - iv) the control blocks on the share pointers also on the heap
+- There are many different destructors not just ~A(), ~B()
+  - destructors for the shared pointers on the stack. a_sptr.~shared_ptr(), b_sptr.~shared_ptr()
+  - destructors for the objects on the heap ~A(), ~B()
+  - destructors for the shared or weak pointers inside A or B
+    - A::b_shared_ptr.~shared_ptr()
+    - B::a_shared_ptr.~shared_ptr() or B::a_weak_ptr.~weak_ptr()
+- See the code output for each code, and compare it with the "TRUE VARIABLE DESTRUCTION SEQUENCE" . Reason through the disrepancies
+
+**More Code** \
+There is more code on circular references here. But it does not have comments/ explanation
+- my code: [L5_smart_memory_management/ksw_demo4a_shared_ptr_circular_reference.cpp](../L5_smart_memory_management/ksw_demo4a_shared_ptr_circular_reference.cpp) 
+- my code: [L5_smart_memory_management/ksw_demo4b_unique_ptr_circular_reference.cpp](../L5_smart_memory_management/ksw_demo4b_unique_ptr_circular_reference.cpp)
+- udc code: [udc_demo2_shared_weak_circular.cpp](../L5_smart_memory_management/udc_demo2_shared_weak_circular.cpp)
+
+## 5) COPYING AND MOVING WITH Unique and Shared Ptrs: Code discussion
 - [L5_smart_memory_management/ksw_demo2a_raw_ptrs.cpp](../L5_smart_memory_management/ksw_demo2a_raw_ptrs.cpp)  
 - [L5_smart_memory_management/ksw_demo2b_unique_ptr_with_custom_copy.cpp](../L5_smart_memory_management/ksw_demo2b_unique_ptr_with_custom_copy.cpp) 
 - [L5_smart_memory_management/ksw_demo2c_unique_ptr_without_custom_copy.cpp](../L5_smart_memory_management/ksw_demo2c_unique_ptr_without_custom_copy.cpp) 
@@ -197,8 +246,6 @@ When the strong count reaches zero, the object is destroyed. The control block r
         ```
 - you could possibly define deep copying custom-copy-constructors and custom-copy-assignment-operators, but that would completely mess up the shared pointer / shared owner semantics
 
-
-  
 
 **Testing: UNIQUE_PTR, SHARED_PTR**
  - i)  printing the address of the pointers
