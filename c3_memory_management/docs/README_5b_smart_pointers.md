@@ -1,29 +1,29 @@
-# 1) SMART POINTERS
+# 🎯 1) SMART POINTERS
 - smart pointers are a raii wrapper around raw pointers
 - corner stone of modern c++ memory management, helps avoid a lot of the major problems that arise from dealing with raw pointers. They save a lot of COGNITIVE OVERLOAD, & saves a lot of bugs
 - smart pointes support both single memory ownership and shared memory ownership
     - std:: unique_ptr for exclusive ownership / single memory ownership
     - std:: shared_ptr for shared memory ownership
 
-## 1.1) Unique Ptr
+## 🎯 1.1) Unique Ptr
 Unique pointer is used for accessing + managing dynamically allocated memory, with **exclusive ownership** i.e they maintain exclusive ownership to the allocated resources
 ![alt text](readme_imgs/smart_pointers/unique_ptr.png)
 
-## 1.2) Shared Ptr
+## 🎯 1.2) Shared Ptr
 Shared Pointer: Definition
 ![alt text](readme_imgs/smart_pointers/shared_ptr_definition.png) 
 
 
-### 1.2.1) Shared Ptr: Use Cases
+### 🎯 1.2.1) Shared Ptr: Use Cases
 - for shared ownership: multiple things own object
 - for factory functions: factory function creates an object and multiple shared pointers to the object for those that need (like a factory that churns out shared pointers)
 - data structures: graphs and nodes etc. where there might be multiple parents and multiple children
 ![alt text](readme_imgs/smart_pointers/shared_ptr_when_to_use.png)
 
-### 1.2.2) Shared Ptr: Control Block
+### 🎯 1.2.2) Shared Ptr: Control Block
 see section 3.2
 
-## 1.2.3) Shared Ptr: Circular References
+## 🎯 1.2.3) Shared Ptr: Circular References
 see section 4
 This is very common in graph structures, and parent child relationships
 **BUT USING 2 SHARED POINTERS THAT REFERENCE EACH OTHER /CIRCULAR REFERENCES CAUSES MEMORY LEAKS !!!!*** LOL SO MUCH FOR USING SMART POINTERS
@@ -34,7 +34,7 @@ Instead of using two shared pointers referencing each other, use one shared poin
 
 ![alt text](readme_imgs/smart_pointers/memory_diagram.png)
 
-## 1.3) Weak Pointer
+## 🎯 1.3) Weak Pointer
 [L5_smart_memory_management/ksw_demo3_weak_ptr_simple_example.cpp](../L5_smart_memory_management/ksw_demo3_weak_ptr_simple_example.cpp)
 
 - Weak pointer is for observing: without  owning
@@ -48,10 +48,10 @@ std::weak_ptr<Student> weak2 = weak1;
 ```
 ![alt text](readme_imgs/smart_pointers/weak_ptr.png)
 
-## 1.3.1) Weak Ptr: Use Cases
+## 🎯 1.3.1) Weak Ptr: Use Cases
 ![alt text](readme_imgs/smart_pointers/weak_ptr_use_cases.png)
 
-## 1.3.2) Weak Ptr: lock() ( generates a shared pointer though)
+## 🎯 1.3.2) Weak Ptr: lock() ( generates a shared pointer though)
 - weak_ptr::lock() is not an exclusive lock like a mutex. The name can be misleading. lock(), infact, returns a shared pointer , 
     It means: “If the object still exists, create another shared_ptr that shares ownership of it.”\
     Therefore, locked2 succeeds precisely because the object is still alive. Multiple shared_ptrs are allowed to own the same object.\
@@ -76,7 +76,7 @@ std::weak_ptr<Student> weak2 = weak1;
 
 ![alt text](readme_imgs/smart_pointers/weak_ptr_lock.png)
 
-## 2) OWNERSHIP SEMANTICS
+## 🎯 2) OWNERSHIP SEMANTICS
 What should you define , with type of pointer \
 **unique_ptr:**
   - There is no default copy constructor, copy-assignment-operator: you can leave at this, in which case no copying is possible(no shallow copy, no deep copy). **you can only move , this is called transferring ownership**
@@ -85,12 +85,12 @@ What should you define , with type of pointer \
   - The default copy constructor, copy-assignment-operator:  this does a *SHALLOW COPY** you can leave at this, in which case no copying is possible(no shallow copy, no deep copy)
   - custom deep copy : you can define custom copy constructors, custom copy-assignment operators. it preserves unique_ptr semantics
 
-## 3) CONTROL BLOCKS
+## 🎯 3) CONTROL BLOCKS
 
-### 3.1) CONTROL BLOCKS: unique_ptr
+### 🎯 3.1) CONTROL BLOCKS: unique_ptr
 unique_ptrs don't have a control block, since ownership is unique
 
-### 3.2) CONTROL BLOCKS: shared_ptr
+### 🎯 3.2) CONTROL BLOCKS: shared_ptr
 Only shared pointers have control blocks. \
 Control Block consists of the following
 - reference count: use_count()
@@ -118,7 +118,7 @@ NOT EXPOSED        → │ Other metadata │
 
 ```
 
-### 3.3) CONTROL BLOCKS: weak_ptr
+### 🎯 3.3) CONTROL BLOCKS: weak_ptr
 weak pointer does not have a separate control block. It shares a control block with shared pointers
 
 ```
@@ -143,13 +143,13 @@ NOT EXPOSED ─────────────────► │ Internal 
 
 
 
-### 3.4) IMPORTANT INSIGHT: what happens when shared_ptr is destroyed
+### 🎯 3.4) IMPORTANT INSIGHT: what happens when shared_ptr is destroyed
 
 
 What happens when shared_ptr is destroyed, but the weak_ptrs still exist. What happens to the weak pointers and control blocks? \
 When the strong count reaches zero, the object is destroyed. The control block remains alive as long as weak references still need it.
 
-## 4) Shared Ptr: CIRCULAR REFERENCES & MEMORY LEAK
+## 🎯 4) Shared Ptr: CIRCULAR REFERENCES & MEMORY LEAK
 see section 4
 This is very common in graph structures, and parent child relationships
 **BUT USING 2 SHARED POINTERS THAT REFERENCE EACH OTHER /CIRCULAR REFERENCES CAUSES MEMORY LEAKS !!!!*** LOL SO MUCH FOR USING SMART POINTERS
@@ -161,7 +161,7 @@ Instead of using two shared pointers referencing each other, use one shared poin
 Summary of how to avoid circular references and memory leak
 ![alt text](readme_imgs/smart_pointers/circular_references.png)
 
-## 4.1) CIRCULAR REFERENCES: CODE DISCUSSION
+## 🎯 4.1) CIRCULAR REFERENCES: CODE DISCUSSION
 **See code**: \
 See explanation at the beginning of each code and comments throughout 
 - [L5_smart_memory_management/ksw_demo5a_circular_ref_all_shared.cpp](../L5_smart_memory_management/ksw_demo5a_circular_ref_all_shared.cpp) 
@@ -192,7 +192,7 @@ There is more code on circular references here. But it does not have comments/ e
 - my code: [L5_smart_memory_management/ksw_demo4b_unique_ptr_circular_reference.cpp](../L5_smart_memory_management/ksw_demo4b_unique_ptr_circular_reference.cpp)
 - udc code: [udc_demo2_shared_weak_circular.cpp](../L5_smart_memory_management/udc_demo2_shared_weak_circular.cpp)
 
-## 5) COPYING AND MOVING WITH Unique and Shared Ptrs: Code discussion
+## 🎯 5) COPYING AND MOVING WITH Unique and Shared Ptrs: Code discussion
 - [L5_smart_memory_management/ksw_demo2a_raw_ptrs.cpp](../L5_smart_memory_management/ksw_demo2a_raw_ptrs.cpp)  
 - [L5_smart_memory_management/ksw_demo2b_unique_ptr_with_custom_copy.cpp](../L5_smart_memory_management/ksw_demo2b_unique_ptr_with_custom_copy.cpp) 
 - [L5_smart_memory_management/ksw_demo2c_unique_ptr_without_custom_copy.cpp](../L5_smart_memory_management/ksw_demo2c_unique_ptr_without_custom_copy.cpp) 
@@ -254,3 +254,43 @@ There is more code on circular references here. But it does not have comments/ e
  - iii) use reference count: 
         - reference count only exists for shared_ptrs. 
         - reference_count **DOES NOT EXIST** for unique_ptrs
+
+
+## 🎯 6) REFACTORING: WHICH POINTER TO USE
+
+![alt text](readme_imgs/smart_pointers/ptr_ownership.png) 
+![alt text](readme_imgs/smart_pointers/ptrs_for_factory_functions.png)
+
+### 🎯 6.1) Why should we refactor code ?** 
+![alt text](readme_imgs/smart_pointers/refactor_code.png)
+
+### 🎯 6.2) Which Pointer to Choose** 
+**The Real Options:  are only 2 pointers to choose from**: unique_ptr, shared_ptr
+- unique_ptr, shared_ptr are the default choice for factory functions
+- Unique Ptr: for unique ownership
+     - one owner only , one resource
+     - be default it cannot be copied, it can be moved only. If you want to copy, you would have to define a custom deep copy
+     - default choice for newly created objects, unless shared ownership is reallly required
+- Shared Ptr: for shared ownership
+    - multiple owners
+    - resource is delete when the last owner is gone
+    - uses reference counting
+    - by default shallow copy only. There is no rule that custom deep copy should not be used 
+
+**Other Options**
+- Weak Ptr: is used in conjunction with Shared Ptr to break circular dependencies only. Notice that weak ptr cannot be dereferenced. 
+    - non owning obeserver
+    - You would have to lock() and generate a shared_ptr to dereference and access the data
+    - does not affect the resource lifetime
+- If for whatever reason Neither Unique not Shared ptr can be used, Use new+ delete , new[]+delete[] , rule of 5 etc.
+
+**unique_ptr vs shared_ptr**
+![alt text](readme_imgs/smart_pointers/unique_vs_shared_ptr.png)
+
+## 🎯 7) BEYOND SMART POINTERS
+ - Memory pools
+ - custom allocators
+
+ below slides are from Udacity
+ ![alt text](readme_imgs/smart_pointers/beyond_smart_pointers1.png)
+ ![alt text](readme_imgs/smart_pointers/beyond_smart_pointers2.png)
