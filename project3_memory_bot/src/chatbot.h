@@ -30,6 +30,16 @@ public:
         // TODO: add move assignment operator
     // END OF TODO
 
+    // Custom Copy Constructor
+    ChatBot(const ChatBot& other);
+    // Custom Copy Assignment Operator
+    ChatBot& operator=(const ChatBot& other);
+
+    // Custom Move Constructor
+    ChatBot(ChatBot&& other) noexcept;
+    // Custom Move Assignment Operator
+    ChatBot& operator=(ChatBot&& other) noexcept;
+
     // getters / setters
     void SetCurrentNode(GraphNode *node);
     void SetRootNode(GraphNode *rootNode) { _rootNode = rootNode; }

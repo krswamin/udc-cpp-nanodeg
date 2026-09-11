@@ -16,6 +16,12 @@ ChatBot::ChatBot()
     _rootNode = nullptr;
 }
 
+// Destructor
+ChatBot::~ChatBot()
+{
+    std::cerr << ">>> Rule of Five Component: ChatBot Destructor <<<" << std::endl;
+}
+
 // TODO the following:
     // TODO: add copy constructor
     // TODO: add copy assignment operator
@@ -23,10 +29,55 @@ ChatBot::ChatBot()
     // TODO: add move assignment operator
 // END OF TODO
 
-ChatBot::~ChatBot()
-{
-    std::cerr << ">>> Rule of Five Component: ChatBot Destructor <<<" << std::endl;
+// Custom Copy Constructor
+ChatBot::ChatBot(const ChatBot& other): _currentNode(other._currentNode),
+                                        _rootNode(other._rootNode),
+                                        _chatLogic(other._chatLogic) {
+    std::cerr << ">>> Rule of Five Component: ChatBot Custom Copy Constructor <<<" << std::endl;
 }
+
+// Custom Copy Assignment Operator
+ChatBot& ChatBot::operator=(const ChatBot& other){
+    std::cerr << ">>> Rule of Five Component: ChatBot Custom Copy Assignment Operator <<<" << std::endl;
+    
+    // Protect against: s1 = s1;
+    if (this != &other) {
+        this->_currentNode = other._currentNode ;
+        this->_rootNode = other._rootNode ;
+        this->_chatLogic = other._chatLogic ;
+    }
+
+    return *this;
+}
+
+// Custom Move Constructor
+ChatBot::ChatBot(ChatBot&& other) noexcept: _currentNode(other._currentNode),
+                                            _rootNode(other._rootNode),
+                                            _chatLogic(other._chatLogic) {
+    std::cerr << ">>> Rule of Five Component: ChatBot Custom Move Constructor <<<" << std::endl;
+    other._currentNode = nullptr;
+    other._rootNode    = nullptr;
+    other._chatLogic   = nullptr;
+}
+
+// Custom Move Assignment Operator
+ChatBot& ChatBot::operator=(ChatBot&& other) noexcept{
+    std::cerr << ">>> Rule of Five Component: ChatBot Custom Move Assignment Operator <<<" << std::endl;
+    if (this != &other)
+    {
+        _currentNode = other._currentNode;
+        _rootNode = other._rootNode;
+        _chatLogic = other._chatLogic;
+
+        other._currentNode = nullptr;
+        other._rootNode = nullptr;
+        other._chatLogic = nullptr;
+    }
+
+    return *this;
+}
+
+
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
 {
